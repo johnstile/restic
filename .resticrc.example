@@ -1,0 +1,4 @@
+export B2_ACCOUNT_ID="000000000000"
+export B2_ACCOUNT_KEY="000000000000000000000000000000000000000000"
+export RESTIC_PASSWORD="some_ludicrous_secure_password"
+export RESTIC_REPOSITORY="b2:my-restic-backup"
