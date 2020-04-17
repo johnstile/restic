@@ -41,5 +41,7 @@ crontab -e
 ```
 
 ## References:
+```.
 B2 Quick Setup: https://www.backblaze.com/b2/docs/quick_account.html
 Restic doc:  https://restic.readthedocs.io/en/latest/
+```

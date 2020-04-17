@@ -134,7 +134,7 @@ elif [ $ACTION == "backup" ]; then
   wait $!
 
   echo "Run Backup"
-  restic backup \
+  time restic backup \
    --verbose \
    --one-file-system \
    --tag $BACKUP_TAG \
@@ -145,7 +145,7 @@ elif [ $ACTION == "backup" ]; then
 
   # See restic-forget(1) or http://restic.readthedocs.io/en/latest/060_forget.html
   echo "Run Forget and Prune"
-  restic forget \
+  time restic forget \
     --tag $BACKUP_TAG \
     --option b2.connections=$B2_CONNECTIONS \
     --prune \
@@ -157,7 +157,7 @@ elif [ $ACTION == "backup" ]; then
   wait $!
 
   echo "Run Check"
-  restic check &
+  time restic check &
   wait $!
     
 
