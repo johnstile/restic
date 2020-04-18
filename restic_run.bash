@@ -54,8 +54,7 @@ fi
 #
 # Get this directory
 #
-SOURCE="${BASH_SOURCE[0]}"
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SCRIPT[0]}" )" >/dev/null 2>&1 && pwd )"
 #
 # Holds keys, passwd, bucket name
 #
@@ -65,10 +64,6 @@ RESTIC_ENV="${SCRIPT_DIR}/.resticrc"
 #
 RESTIC_EXCLUDES="${SCRIPT_DIR}/.excludes"
 RESTIC_INCLUDES="${SCRIPT_DIR}/.includes"
-#
-# How many connections to B2, default is 5
-#
-B2_CONNECTIONS=5
 #
 # Taging each backup
 #
@@ -86,12 +81,10 @@ VARS:
 DATE=$DATE
 ACTION=$ACTION
 DEBUG=$DEBUG
-SOURCE=$SOURCE
 SCRIPT_DIR=$SCRIPT_DIR
 RESTIC_ENV=$RESTIC_ENV
 RESTIC_EXCLUDES=$RESTIC_EXCLUDES
 RESTIC_INCLUDES=$RESTIC_INCLUDES
-B2_CONNECTIONS=$B2_CONNECTIONS
 RESTIC_TAG=$RESTIC_TAG
 ---------------------------------
 "
@@ -137,7 +130,6 @@ elif [ $ACTION == "backup" ]; then
    --verbose \
    --one-file-system \
    --tag $BACKUP_TAG \
-   --option b2.connections=$B2_CONNECTIONS \
    --exclude-file $RESTIC_EXCLUDES \
    --files-from $RESTIC_INCLUDES &
   wait $!
@@ -146,7 +138,6 @@ elif [ $ACTION == "backup" ]; then
   echo "### Run Forget and Prune"
   time restic forget \
     --tag $BACKUP_TAG \
-    --option b2.connections=$B2_CONNECTIONS \
     --prune \
     --group-by "paths,tags" \
     --keep-daily $RETENTION_DAYS \
