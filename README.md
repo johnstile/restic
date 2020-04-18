@@ -37,7 +37,8 @@ For each backup:
 # Setup crontab
 crontab -e
 # Restic backup to B2 storage
-0    *    *    *     *  /root/restic/restic_run.bash -a backup 2>&1 | tee -a /root/restic/backup.log
+0    */6    *    *     *  /root/restic/restic_run.bash -a backup 2>&1 | tee -a /root/restic/backup.log
+
 ```
 
 ## References:

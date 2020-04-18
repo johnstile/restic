@@ -37,7 +37,7 @@ if [ -z $ACTION ]; then
   exit
 fi
 
-#set -e -o pipefail
+set -e -o pipefail
 #set -e
 
 #
@@ -68,7 +68,7 @@ RESTIC_INCLUDES="${SCRIPT_DIR}/.includes"
 #
 # How many connections to B2, default is 5
 #
-B2_CONNECTIONS=50
+B2_CONNECTIONS=5
 #
 # Taging each backup
 #
@@ -81,9 +81,8 @@ RETENTION_WEEKS=4
 RETENTION_MONTHS=6
 RETENTION_YEARS=3
 
-
-echo "VARS:
----------------------------------
+echo "---------------------------------
+VARS:
 DATE=$DATE
 ACTION=$ACTION
 DEBUG=$DEBUG
@@ -129,11 +128,11 @@ if [ $ACTION == "init" ]; then
   restic -r "b2:mother-restic-backup" init
 
 elif [ $ACTION == "backup" ]; then
-  echo "Run unlock"
+  echo "### Run unlock"
   restic unlock &
   wait $!
 
-  echo "Run Backup"
+  echo "### Run Backup"
   time restic backup \
    --verbose \
    --one-file-system \
@@ -144,7 +143,7 @@ elif [ $ACTION == "backup" ]; then
   wait $!
 
   # See restic-forget(1) or http://restic.readthedocs.io/en/latest/060_forget.html
-  echo "Run Forget and Prune"
+  echo "### Run Forget and Prune"
   time restic forget \
     --tag $BACKUP_TAG \
     --option b2.connections=$B2_CONNECTIONS \
@@ -156,7 +155,7 @@ elif [ $ACTION == "backup" ]; then
     --keep-yearly $RETENTION_YEARS &
   wait $!
 
-  echo "Run Check"
+  echo "### Run Check"
   time restic check &
   wait $!
     
@@ -179,6 +178,8 @@ elif [ $ACTION == "list" ]; then
   restic list keys
   echo "locks"
   restic list locks
+elif [ $ACTION == "restore" ]; then
+  echo "time restic restore -t /mnt/restore"
 else
   echo "Unknown ACTION: $ACTION"
 fi
